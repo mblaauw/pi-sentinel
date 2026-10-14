@@ -1,0 +1,17 @@
+apiVersion: sentinel.pi/v1alpha1
+id: namespace-caretaker
+owner: platform-team
+recipe: kubernetes-care@1
+connection: kubernetes
+scope:
+  namespaces: [example-tst]
+trigger:
+  mode: continuous
+  intervalSeconds: 60
+  jitterSeconds: 10
+actions:
+  mode: report
+  allowedPlaybooks: []
+output:
+  type: stdout
+  language: en

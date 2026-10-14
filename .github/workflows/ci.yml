@@ -1,0 +1,23 @@
+name: Validate
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    container: node:24.19.0-bookworm
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run check
+      - run: npm run schemas && git diff --exit-code -- schemas/
+      - run: node dist/cli.js task validate examples/tasks/refinement-review --environment tst
+      - run: node dist/cli.js task preview examples/tasks/refinement-review --fixture fixtures/missing-criteria.json --check-only
+  helm:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - run: docker run --rm -v "$PWD:/src" -w /src alpine/helm:3.19.0 lint helm/sentinel-pi --set task.configMapName=validation-bundle
+      - run: docker run --rm -v "$PWD:/src" -w /src alpine/helm:3.19.0 template validation helm/sentinel-pi --set task.configMapName=validation-bundle --set task.mode=continuous

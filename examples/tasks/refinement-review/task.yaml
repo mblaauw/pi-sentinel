@@ -1,0 +1,16 @@
+apiVersion: sentinel.pi/v1alpha1
+id: refinement-review
+owner: platform-team
+recipe: gitlab-refinement@1
+connection: gitlab
+scope:
+  projects: [example/platform]
+  labels: [technical-refinement]
+trigger:
+  mode: cron
+  schedule: '*/5 * * * *'
+  timeZone: Europe/Amsterdam
+instructions: prompts/review.md
+output:
+  language: nl
+  publish: false

@@ -1,0 +1,75 @@
+image:
+  repository: sentinel-pi
+  tag: '0.1.0'
+  digest: ''
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+task:
+  id: example-task
+  configMapName: ''
+  environment: tst
+  revision: ''
+  mode: cron
+  schedule: '*/5 * * * *'
+  timeZone: Europe/Amsterdam
+  enabled: true
+  files:
+    - { key: f0, path: task.yaml }
+    - { key: f1, path: task.lock.json }
+    - { key: f2, path: platform.yaml }
+persistence:
+  existingClaim: ''
+  size: 1Gi
+  storageClass: ''
+job:
+  activeDeadlineSeconds: 720
+  startingDeadlineSeconds: 120
+  backoffLimit: 0
+  successfulHistory: 2
+  failedHistory: 3
+  ttlSecondsAfterFinished: 86400
+runtime:
+  cycleSeconds: 600
+  startupSeconds: 30
+  terminationSeconds: 30
+resources:
+  requests: { cpu: 100m, memory: 256Mi }
+  limits: { cpu: '1', memory: 1Gi }
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  seccompProfile: { type: RuntimeDefault }
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: { drop: [ALL] }
+credentials:
+  # Existing Secrets only. Their keys become environment variables.
+  envFromSecrets: []
+caBundle:
+  # Existing ConfigMap with trusted CA PEM; Node and API clients use it.
+  configMapName: ''
+  key: ca.crt
+kubernetes:
+  enabled: false
+  namespaces: []
+  # Exact namespace/deployment pairs; rendered into per-name patch rules.
+  writeDeployments: []
+networkPolicy:
+  enabled: true
+  # Explicit destination rules for vLLM/source APIs. No blanket allow default.
+  egress: []
+metrics:
+  enabled: true
+  port: 9090
+  ingressFrom: []
+externalSecret:
+  enabled: false
+  storeName: ''
+  refreshInterval: 1h
+  keys: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

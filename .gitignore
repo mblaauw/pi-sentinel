@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.sentinel/
+coverage/
+*.sqlite*
+*.tgz
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+artifacts/
+docs/archive/

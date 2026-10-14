@@ -1,0 +1,378 @@
+{
+  "$ref": "#/definitions/task",
+  "definitions": {
+    "task": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "const": "sentinel.pi/v1alpha1"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipe": {
+          "type": "string",
+          "enum": [
+            "gitlab-refinement@1",
+            "kubernetes-care@1",
+            "platform-report@1"
+          ]
+        },
+        "connection": {
+          "type": "string",
+          "minLength": 1
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "projects": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "default": []
+            },
+            "labels": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "namespaces": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "default": []
+            },
+            "deployments": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "trigger": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "once",
+                "cron",
+                "continuous"
+              ],
+              "default": "once"
+            },
+            "schedule": {
+              "type": "string"
+            },
+            "timeZone": {
+              "type": "string",
+              "default": "Europe/Amsterdam"
+            },
+            "intervalSeconds": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 60
+            },
+            "jitterSeconds": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 10
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "agent": {
+          "type": "object",
+          "properties": {
+            "modelProfile": {
+              "type": "string",
+              "default": "default"
+            },
+            "tools": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "systemPrompt": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "flow": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "review",
+                "investigate",
+                "report",
+                "custom"
+              ]
+            },
+            "file": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "maxItemsPerCycle": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 5
+            },
+            "maxWallSecondsPerCycle": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 600
+            },
+            "maxTurnsPerItem": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 12
+            },
+            "maxToolCallsPerItem": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 30
+            },
+            "maxWallSecondsPerItem": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 120
+            },
+            "maxRequestInputTokens": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 32000
+            },
+            "maxOutputTokensPerCall": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 4000
+            },
+            "maxLlmCallsPerCycle": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 60
+            },
+            "maxCallsPerDay": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 200
+            },
+            "maxTokensPerDay": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 1000000
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "maxRefs": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 12
+            },
+            "maxDepth": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 2
+            },
+            "maxBytes": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 12000
+            },
+            "maxTotalBytes": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 24000
+            },
+            "maxLogLines": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 100
+            },
+            "minimumFailureAgeSeconds": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 180
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "actions": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "report",
+                "propose",
+                "auto"
+              ],
+              "default": "report"
+            },
+            "allowedPlaybooks": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "const": "restart-opted-in-deployment"
+              },
+              "default": []
+            },
+            "maxActionsPerItem": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 1
+            },
+            "maxActionsPerCycle": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 1
+            },
+            "cooldownSeconds": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 1800
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "output": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "stdout",
+                "gitlab.item-note",
+                "gitlab.issue-note"
+              ]
+            },
+            "connection": {
+              "type": "string"
+            },
+            "projectPath": {
+              "type": "string"
+            },
+            "issueIid": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds"
+            },
+            "language": {
+              "type": "string",
+              "default": "en"
+            },
+            "publish": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "lifecycle": {
+          "type": "object",
+          "properties": {
+            "revalidateSeconds": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 300
+            },
+            "retrySeconds": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 60
+            },
+            "maxAttempts": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 3
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "report": {
+          "type": "object",
+          "properties": {
+            "window": {
+              "type": "string",
+              "enum": [
+                "previous-day",
+                "last-hour"
+              ],
+              "default": "previous-day"
+            },
+            "queries": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "default": {}
+            },
+            "catchUpWindows": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 3
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "state": {
+          "type": "object",
+          "properties": {
+            "retentionDays": {
+              "$ref": "#/definitions/task/properties/trigger/properties/intervalSeconds",
+              "default": 30
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        }
+      },
+      "required": [
+        "apiVersion",
+        "id",
+        "owner",
+        "recipe",
+        "connection"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

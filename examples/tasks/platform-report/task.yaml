@@ -1,0 +1,18 @@
+apiVersion: sentinel.pi/v1alpha1
+id: platform-report
+owner: platform-team
+recipe: platform-report@1
+connection: prometheus
+trigger:
+  mode: cron
+  schedule: '0 8 * * *'
+  timeZone: Europe/Amsterdam
+report:
+  window: previous-day
+  catchUpWindows: 3
+  queries:
+    scrape_availability: up
+    container_restarts: sum(kube_pod_container_status_restarts_total) by (namespace)
+output:
+  type: stdout
+  language: en

@@ -1,0 +1,56 @@
+{{- if and (ne .Values.task.mode "continuous") (ge (add .Values.runtime.cycleSeconds .Values.runtime.startupSeconds .Values.runtime.terminationSeconds) (int64 .Values.job.activeDeadlineSeconds)) }}
+{{- fail "job.activeDeadlineSeconds must exceed startup + cycle + termination" }}
+{{- end }}
+{{- if eq .Values.image.tag "latest" }}{{ fail "Mutable latest image tag is not supported" }}{{ end }}
+{{- if eq .Values.task.mode "continuous" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sentinel.name" . }}
+  labels:
+    {{- include "sentinel.labels" . | nindent 4 }}
+spec:
+  replicas: {{ ternary 1 0 .Values.task.enabled }}
+  strategy: {type: Recreate}
+  selector:
+    matchLabels:
+      {{- include "sentinel.selector" . | nindent 6 }}
+  template:
+    {{- include "sentinel.pod" . | nindent 4 }}
+{{- else if eq .Values.task.mode "cron" }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "sentinel.name" . }}
+  labels:
+    {{- include "sentinel.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.task.schedule | quote }}
+  timeZone: {{ .Values.task.timeZone | quote }}
+  suspend: {{ not .Values.task.enabled }}
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: {{ .Values.job.startingDeadlineSeconds }}
+  successfulJobsHistoryLimit: {{ .Values.job.successfulHistory }}
+  failedJobsHistoryLimit: {{ .Values.job.failedHistory }}
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: {{ .Values.job.activeDeadlineSeconds }}
+      backoffLimit: {{ .Values.job.backoffLimit }}
+      ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
+      template:
+        {{- include "sentinel.pod" . | nindent 8 }}
+{{- else }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "sentinel.name" . }}
+  labels:
+    {{- include "sentinel.labels" . | nindent 4 }}
+spec:
+  suspend: {{ not .Values.task.enabled }}
+  activeDeadlineSeconds: {{ .Values.job.activeDeadlineSeconds }}
+  backoffLimit: {{ .Values.job.backoffLimit }}
+  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
+  template:
+    {{- include "sentinel.pod" . | nindent 4 }}
+{{- end }}

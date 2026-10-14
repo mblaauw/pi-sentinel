@@ -1,0 +1,23 @@
+name: Build container
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: write
+jobs:
+  image:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Build and publish immutable commit tag
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          ACTOR: ${{ github.actor }}
+          REVISION: ${{ github.sha }}
+        run: |
+          IMAGE="ghcr.io/$(printf '%s' "$OWNER" | tr '[:upper:]' '[:lower:]')/sentinel-pi:sha-$REVISION"
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$ACTOR" --password-stdin
+          docker build --pull --tag "$IMAGE" .
+          docker push "$IMAGE"
+          docker inspect --format '{{index .RepoDigests 0}}' "$IMAGE"

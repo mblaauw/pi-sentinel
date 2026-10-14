@@ -1,0 +1,113 @@
+{
+  "$ref": "#/definitions/result",
+  "definitions": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "healthy",
+            "needs_attention",
+            "inconclusive",
+            "failed"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3000
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "severity",
+              "text",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 20
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "maxItems": 5
+        },
+        "proposedAction": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "playbook": {
+                  "type": "string",
+                  "const": "restart-opted-in-deployment"
+                },
+                "namespace": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "uid": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "playbook",
+                "namespace",
+                "name",
+                "uid",
+                "reason"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "status",
+        "summary",
+        "findings",
+        "questions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

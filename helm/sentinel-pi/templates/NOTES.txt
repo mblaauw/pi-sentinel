@@ -1,0 +1,8 @@
+Sentinel Pi task {{ .Values.task.id }} is configured in {{ .Release.Namespace }}.
+Mode: {{ .Values.task.mode }}
+Task package: {{ .Values.task.configMapName }}
+
+The task ConfigMap and credential Secrets must already exist. Configure explicit
+egress destinations for your model router and source APIs before running.
+CronJob readiness does not prove a task ran: inspect Job results and worker logs.
+The retained state PVC is intentionally not deleted on uninstall.

@@ -1,0 +1,30 @@
+# Generic example. Replace endpoints and provision referenced credentials.
+connections:
+  gitlab:
+    kind: gitlab
+    baseUrl: https://gitlab.example.internal/api/v4
+    tokenEnv: GITLAB_TOKEN
+    readTokenEnv: GITLAB_READ_TOKEN
+    allowedProjects: [example/platform]
+  kubernetes:
+    kind: kubernetes
+    baseUrl: https://kubernetes.default.svc
+    tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    allowedNamespaces: [example-tst]
+    writableDeployments: []
+  prometheus:
+    kind: prometheus
+    baseUrl: http://prometheus.monitoring.svc:9090
+models:
+  default:
+    baseUrl: http://vllm-router.ai.svc:8000/v1
+    modelId: your-served-model-id
+    apiKeyEnv: VLLM_API_KEY
+    contextWindow: 65536
+    maxOutputTokens: 4096
+policy:
+  allowAuto: false
+  allowPublish: false
+  maxCallsPerDay: 500
+  maxTokensPerDay: 2000000

@@ -1,0 +1,14 @@
+image:
+  repository: registry.example.internal/platform/sentinel-pi
+  # Replace with the exact digest produced by the image build.
+  digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+credentials:
+  envFromSecrets: [sentinel-vllm, sentinel-gitlab]
+networkPolicy:
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: ai }
+      ports: [{ port: 8000, protocol: TCP }]
+    # For an external GitLab/API endpoint add its real CIDR + port rule here.
+    # CNI/service translation and custom DNS placement must be verified locally.

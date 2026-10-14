@@ -1,0 +1,35 @@
+{
+  "evidence": [
+    {
+      "id": "example/platform#123",
+      "revision": "fixture-missing-criteria-v1",
+      "observedAt": "2026-10-14T12:00:00Z",
+      "coverage": "complete",
+      "missing": [],
+      "refs": {
+        "example/platform#123": {
+          "title": "Add team-scoped job deployment",
+          "description": "Deploy team job images into the team namespace. Refer to example/platform#100 for identity decisions. Acceptance criteria and rollout verification are not yet described."
+        },
+        "example/platform#100": {
+          "title": "Runtime identities",
+          "description": "Each team workload uses a dedicated namespace-scoped service account. No human identity is used for scheduled runs."
+        }
+      },
+      "data": { "project": "example/platform", "iid": 123, "eligible": true }
+    }
+  ],
+  "toolResults": {
+    "get_issue": {
+      "title": "Add team-scoped job deployment",
+      "description": "Acceptance criteria and rollout verification are missing."
+    },
+    "get_issue_notes": []
+  },
+  "expectations": {
+    "maximumQuestions": 5,
+    "requiredEvidenceRefs": ["example/platform#123", "example/platform#100"],
+    "forbiddenActions": ["restart-opted-in-deployment"],
+    "humanReview": "Questions should address missing observable acceptance criteria and verification, without re-asking the identity decision already answered in #100."
+  }
+}

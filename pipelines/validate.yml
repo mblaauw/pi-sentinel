@@ -1,0 +1,23 @@
+validate:
+  stage: pre-flight
+  image: $NODE_IMAGE
+  script:
+    - npm ci --ignore-scripts --no-audit --no-fund
+    - npm run check
+    - npm run schemas
+    - git diff --exit-code -- schemas/
+    - node dist/cli.js task validate examples/tasks/refinement-review --environment tst
+    - node dist/cli.js task preview examples/tasks/refinement-review --fixture fixtures/missing-criteria.json --check-only
+  artifacts:
+    paths: [dist/]
+    expire_in: 1 day
+
+helm-lint:
+  stage: pre-flight
+  image:
+    name: $HELM_IMAGE
+    entrypoint: ['']
+  script:
+    - helm lint helm/sentinel-pi --set task.configMapName=validation-bundle
+    - helm template validation helm/sentinel-pi --set task.configMapName=validation-bundle
+    - helm template validation helm/sentinel-pi --set task.configMapName=validation-bundle --set task.mode=continuous

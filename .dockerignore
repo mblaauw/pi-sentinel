@@ -1,0 +1,9 @@
+.git
+node_modules
+dist
+test
+artifacts
+.sentinel
+*.sqlite*
+.env*
+docs/archive

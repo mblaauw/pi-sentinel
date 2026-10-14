@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "sentinel.name" . }}
+  labels:
+    {{- include "sentinel.labels" . | nindent 4 }}
+automountServiceAccountToken: {{ .Values.kubernetes.enabled }}
+{{- if .Values.kubernetes.enabled }}
+{{- $root := . }}
+{{- range .Values.kubernetes.namespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "sentinel.name" $root }}
+  namespace: {{ . | quote }}
+  labels:
+    {{- include "sentinel.labels" $root | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: [pods, events]
+    verbs: [get, list]
+  - apiGroups: [""]
+    resources: [pods/log]
+    verbs: [get]
+  - apiGroups: [apps]
+    resources: [deployments, replicasets]
+    verbs: [get]
+  {{- $ns := . }}
+  {{- range $root.Values.kubernetes.writeDeployments }}
+  {{- $parts := splitList "/" . }}
+  {{- if ne (len $parts) 2 }}{{ fail "writeDeployments entries must be namespace/name" }}{{ end }}
+  {{- if eq (index $parts 0) $ns }}
+  - apiGroups: [apps]
+    resources: [deployments]
+    resourceNames: [{{ index $parts 1 | quote }}]
+    verbs: [patch]
+  {{- end }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "sentinel.name" $root }}
+  namespace: {{ . | quote }}
+  labels:
+    {{- include "sentinel.labels" $root | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "sentinel.name" $root }}
+    namespace: {{ $root.Release.Namespace | quote }}
+roleRef:
+  kind: Role
+  name: {{ include "sentinel.name" $root }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}

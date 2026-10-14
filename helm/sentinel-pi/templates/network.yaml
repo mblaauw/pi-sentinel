@@ -1,0 +1,41 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "sentinel.name" . }}
+  labels:
+    {{- include "sentinel.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "sentinel.selector" . | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    {{- if and .Values.metrics.enabled .Values.metrics.ingressFrom }}
+    - from:
+        {{- toYaml .Values.metrics.ingressFrom | nindent 8 }}
+      ports: [{port: {{ .Values.metrics.port }}, protocol: TCP}]
+    {{- else }} []
+    {{- end }}
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+      ports: [{port: 53, protocol: UDP}, {port: 53, protocol: TCP}]
+    {{- with .Values.networkPolicy.egress }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}
+{{- if and .Values.metrics.enabled (eq .Values.task.mode "continuous") }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sentinel.name" . }}
+  labels:
+    {{- include "sentinel.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "sentinel.selector" . | nindent 4 }}
+  ports: [{name: metrics, port: {{ .Values.metrics.port }}, targetPort: metrics}]
+{{- end }}
