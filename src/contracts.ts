@@ -45,7 +45,7 @@ const triggerSchema = z
   });
 export const taskSchema = z
   .object({
-    apiVersion: z.literal('sentinel.pi/v1alpha1'),
+    apiVersion: z.literal('pi-sentinel/v1alpha1'),
     id: z.string().regex(/^[a-z][a-z0-9-]{0,47}$/),
     owner: z.string().min(1),
     recipe: z.enum(['gitlab-refinement@1', 'kubernetes-care@1', 'platform-report@1']),

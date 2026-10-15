@@ -1,4 +1,4 @@
-# Authoring Sentinel Pi tasks
+# Authoring Pi Sentinel tasks
 
 This guide is for people and existing OpenCode/Pi coding agents. Use the existing
 recipes and configuration before adding custom code. Do not invent site-specific
@@ -16,7 +16,7 @@ endpoints, credentials or namespaces.
 8. Package and deploy through the existing shared CI and Helm chart.
 
 Every command below uses `node dist/cli.js` after `npm run build`. The installed
-container also exposes `sentinel` as a convenience executable.
+container also exposes `pi-sentinel` as a convenience executable.
 
 ```bash
 node dist/cli.js task init review --recipe gitlab-refinement

@@ -2,13 +2,13 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "sentinel.name" . }}
+  name: {{ include "pi-sentinel.name" . }}
   labels:
-    {{- include "sentinel.labels" . | nindent 4 }}
+    {{- include "pi-sentinel.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
-      {{- include "sentinel.selector" . | nindent 6 }}
+      {{- include "pi-sentinel.selector" . | nindent 6 }}
   policyTypes: [Ingress, Egress]
   ingress:
     {{- if and .Values.metrics.enabled .Values.metrics.ingressFrom }}
@@ -31,11 +31,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "sentinel.name" . }}
+  name: {{ include "pi-sentinel.name" . }}
   labels:
-    {{- include "sentinel.labels" . | nindent 4 }}
+    {{- include "pi-sentinel.labels" . | nindent 4 }}
 spec:
   selector:
-    {{- include "sentinel.selector" . | nindent 4 }}
+    {{- include "pi-sentinel.selector" . | nindent 4 }}
   ports: [{name: metrics, port: {{ .Values.metrics.port }}, targetPort: metrics}]
 {{- end }}

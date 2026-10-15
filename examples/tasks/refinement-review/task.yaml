@@ -1,4 +1,4 @@
-apiVersion: sentinel.pi/v1alpha1
+apiVersion: pi-sentinel/v1alpha1
 id: refinement-review
 owner: platform-team
 recipe: gitlab-refinement@1

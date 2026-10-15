@@ -1,5 +1,5 @@
 {
-  "name": "sentinel-pi",
+  "name": "pi-sentinel",
   "version": "0.1.0",
   "description": "Autonomous Pi task workers for Kubernetes, GitLab and internal model routers",
   "type": "module",
@@ -8,7 +8,7 @@
     "node": ">=24.0.0"
   },
   "bin": {
-    "sentinel": "dist/cli.js"
+    "pi-sentinel": "dist/cli.js"
   },
   "exports": {
     ".": "./dist/host.js"
@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts",
     "check": "npm run typecheck && npm test && npm run build",
-    "sentinel": "tsx src/cli.ts",
+    "pi-sentinel": "tsx src/cli.ts",
     "schemas": "node --import tsx scripts/schemas.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

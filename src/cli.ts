@@ -15,7 +15,7 @@ import { recipes } from './recipes.js';
 import { redact, hash } from './util.js';
 
 const program = new Command()
-  .name('sentinel')
+  .name('pi-sentinel')
   .version('0.1.0')
   .description('Bounded autonomous Pi task workers');
 const task = program.command('task').description('Author, inspect and preview task bundles');
@@ -48,7 +48,7 @@ common(
   await writeFile(
     join(dir, 'task.yaml'),
     YAML.stringify({
-      apiVersion: 'sentinel.pi/v1alpha1',
+      apiVersion: 'pi-sentinel/v1alpha1',
       id,
       owner: 'platform-team',
       recipe,
@@ -184,7 +184,7 @@ common(
 });
 task
   .command('status')
-  .option('--state <file>', 'State database', '/state/sentinel.sqlite')
+  .option('--state <file>', 'State database', '/state/pi-sentinel.sqlite')
   .action(async (o) => {
     const db = new State(o.state, true);
     try {
@@ -195,10 +195,12 @@ task
   });
 task
   .command('reprocess <source-id>')
-  .option('--state <file>', 'State database', '/state/sentinel.sqlite')
+  .option('--state <file>', 'State database', '/state/pi-sentinel.sqlite')
   .action(async (id, o) => {
-    if (process.env.SENTINEL_MAINTENANCE !== 'true')
-      throw new Error('Stop the worker and set SENTINEL_MAINTENANCE=true before state maintenance');
+    if (process.env.PI_SENTINEL_MAINTENANCE !== 'true')
+      throw new Error(
+        'Stop the worker and set PI_SENTINEL_MAINTENANCE=true before state maintenance',
+      );
     const db = new State(o.state);
     try {
       if (!db.item(id)) throw new Error('Unknown source');
@@ -211,7 +213,7 @@ task
 common(
   program
     .command('worker <dir>')
-    .option('--state <file>', 'State database', '/state/sentinel.sqlite')
+    .option('--state <file>', 'State database', '/state/pi-sentinel.sqlite')
     .option('--artifacts <directory>', 'Bounded report directory')
     .option('--port <port>', 'Health/metrics port', '9090')
     .option('--lock-held', 'Internal flock child'),

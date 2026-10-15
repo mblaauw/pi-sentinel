@@ -6,7 +6,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "const": "sentinel.pi/v1alpha1"
+          "const": "pi-sentinel/v1alpha1"
         },
         "id": {
           "type": "string",

@@ -1,4 +1,4 @@
-# Sentinel Pi contributor instructions
+# Pi Sentinel contributor instructions
 
 Read README.md, DESIGN.md and TASK_AUTHORING.md before changing task semantics.
 

@@ -1,9 +1,9 @@
 image:
-  repository: registry.example.internal/platform/sentinel-pi
+  repository: registry.example.internal/platform/pi-sentinel
   # Replace with the exact digest produced by the image build.
   digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
 credentials:
-  envFromSecrets: [sentinel-vllm, sentinel-gitlab]
+  envFromSecrets: [pi-sentinel-vllm, pi-sentinel-gitlab]
 networkPolicy:
   egress:
     - to:

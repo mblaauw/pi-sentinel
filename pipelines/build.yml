@@ -15,7 +15,7 @@ build-image:
     - docker build --pull --build-arg "NODE_IMAGE=$NODE_IMAGE" --tag "$CI_REGISTRY_IMAGE:sha-$CI_COMMIT_SHORT_SHA" .
     - docker push "$CI_REGISTRY_IMAGE:sha-$CI_COMMIT_SHORT_SHA"
     - docker inspect --format '{{index .RepoDigests 0}}' "$CI_REGISTRY_IMAGE:sha-$CI_COMMIT_SHORT_SHA" > image-digest.txt
-    - printf 'SENTINEL_IMAGE=%s\n' "$(cat image-digest.txt)" > image.env
+    - printf 'PI_SENTINEL_IMAGE=%s\n' "$(cat image-digest.txt)" > image.env
   artifacts:
     paths: [image-digest.txt]
     reports:
@@ -31,6 +31,6 @@ package-chart:
     - when: manual
       allow_failure: true
   script:
-    - helm package helm/sentinel-pi --destination artifacts/charts
+    - helm package helm/pi-sentinel --destination artifacts/charts
   artifacts:
     paths: [artifacts/charts/]

@@ -1,8 +1,8 @@
-# Sentinel Pi
+# Pi Sentinel
 
 **Small autonomous workers. One image. Tasks as code.**
 
-Sentinel Pi runs bounded Pi agent sessions on Kubernetes, connected to your own
+Pi Sentinel runs bounded Pi agent sessions on Kubernetes, connected to your own
 OpenAI-compatible model router. Define a task, inspect its scope, preview its
 output and deploy through a shared Helm chart.
 
@@ -73,7 +73,7 @@ node dist/cli.js task explain tasks/my-review --environment tst
 A task definition stays small:
 
 ```yaml
-apiVersion: sentinel.pi/v1alpha1
+apiVersion: pi-sentinel/v1alpha1
 id: refinement-review
 owner: platform-team
 recipe: gitlab-refinement@1
@@ -100,7 +100,7 @@ Build the runtime once; task packaging does not rebuild it. Use your internal
 registry mirror/base image in an air-gapped installation.
 
 ```bash
-docker build --tag sentinel-pi:0.1.0 .
+docker build --tag pi-sentinel:0.1.0 .
 node dist/cli.js task package examples/tasks/refinement-review \
   --environment tst --out artifacts/task
 ```
@@ -111,7 +111,7 @@ credential Secret references and egress rules in your environment values.
 ```bash
 kubectl --context "$KUBE_CONTEXT" --namespace "$KUBE_NAMESPACE" \
   apply -f artifacts/task/task-configmap.yaml
-helm upgrade --install sentinel-review helm/sentinel-pi \
+helm upgrade --install pi-sentinel-review helm/pi-sentinel \
   --kube-context "$KUBE_CONTEXT" --namespace "$KUBE_NAMESPACE" \
   --values artifacts/task/task-values.yaml --values your-values.yaml --wait
 ```
@@ -140,7 +140,7 @@ trust. Configure the actual served model ID and context/output limits.
 ```bash
 npm run check
 npm run schemas
-helm lint helm/sentinel-pi --set task.configMapName=validation-bundle
+helm lint helm/pi-sentinel --set task.configMapName=validation-bundle
 ```
 
 Tests cover the pinned Pi tool protocol, scopes/lockfiles, no-change processing,

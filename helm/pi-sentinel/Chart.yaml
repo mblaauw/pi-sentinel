@@ -1,5 +1,5 @@
 apiVersion: v2
-name: sentinel-pi
+name: pi-sentinel
 description: Bounded autonomous Pi task workers with immutable task bundles
 type: application
 version: 0.1.0

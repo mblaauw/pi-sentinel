@@ -19,7 +19,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY package.json ./
 COPY schemas ./schemas
-RUN ln -s /app/dist/cli.js /usr/local/bin/sentinel && chmod +x /app/dist/cli.js
+RUN ln -s /app/dist/cli.js /usr/local/bin/pi-sentinel && chmod +x /app/dist/cli.js
 USER 1000:1000
 ENTRYPOINT ["node", "/app/dist/cli.js"]
 CMD ["--help"]

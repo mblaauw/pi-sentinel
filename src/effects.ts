@@ -45,7 +45,7 @@ export async function repair(
   let deployment = await kube.get(a.namespace, 'deployments', a.name, s);
   if (deployment.metadata.uid !== a.uid) return denied('Target UID changed');
   const eligible = (d: KubeObject) =>
-    d.metadata.annotations?.['sentinel.pi/auto-repair'] === 'true' &&
+    d.metadata.annotations?.['pi-sentinel/auto-repair'] === 'true' &&
     (d.spec?.replicas ?? 0) >= 2 &&
     d.spec?.strategy?.type !== 'Recreate' &&
     !d.spec?.paused &&
@@ -73,7 +73,7 @@ export async function repair(
   const intent = { annotation, uid: a.uid, namespace: a.namespace, name: a.name };
   state.intent(key, intent);
   state.setCooldown(targetKey, r.task.actions.cooldownSeconds);
-  const current = deployment.spec?.template?.metadata?.annotations?.['sentinel.pi/restarted-at'];
+  const current = deployment.spec?.template?.metadata?.annotations?.['pi-sentinel/restarted-at'];
   if (current !== annotation) {
     if (existing)
       return {
@@ -83,7 +83,7 @@ export async function repair(
       };
     const annotations = {
       ...(deployment.spec?.template?.metadata?.annotations ?? {}),
-      'sentinel.pi/restarted-at': annotation,
+      'pi-sentinel/restarted-at': annotation,
     };
     const patch = [
       { op: 'test', path: '/metadata/uid', value: a.uid },
@@ -167,7 +167,7 @@ export async function publish(
   if (!project || !iid || !connection.allowedProjects.includes(project))
     throw new Error('Output target is outside allowed projects');
   const key = `${r.task.id}:${r.environment}:${project}#${iid}`,
-    marker = `<!-- sentinel-pi:${key} -->`;
+    marker = `<!-- pi-sentinel:${key} -->`;
   const body = marker + '\n' + noteBody(report);
   // Exclude timestamps, run IDs and generated footer from the no-change identity.
   const contentHash = hash({

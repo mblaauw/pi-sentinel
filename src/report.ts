@@ -64,7 +64,7 @@ export function html(r: RunReport) {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
-<title>${text(r.taskId)} — Sentinel Pi</title><style>
+<title>${text(r.taskId)} — Pi Sentinel</title><style>
 :root{color-scheme:light;--ink:#172b41;--muted:#617287;--line:#dce5ed;--accent:#157a77}
 *{box-sizing:border-box}body{margin:0;background:#f3f6f9;color:var(--ink);font:15px/1.6 system-ui,sans-serif}
 main{max-width:1040px;margin:auto;padding:32px 24px 64px}.brand{font-size:12px;letter-spacing:.16em;font-weight:750;color:var(--accent);text-transform:uppercase}
@@ -74,7 +74,7 @@ header{display:flex;justify-content:space-between;align-items:center;gap:16px;ma
 .finding{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-top:1px solid var(--line)}.finding p{margin:0 0 3px}ol,ul{padding-left:22px;margin:0}li{margin:10px 0}.preview{padding:10px 16px;background:#e5eef8;border-radius:8px;margin-bottom:18px}.missing{background:#fff7e7;border:1px solid #f3d7a0}.footer{font-size:12px;color:var(--muted);margin:22px 0;overflow-wrap:anywhere}summary{cursor:pointer;font-weight:600}pre{font:12px/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:#edf2f7;padding:16px;border-radius:8px}
 @media(max-width:620px){main{padding:20px 14px}.metrics{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start}h1{font-size:24px}}
 </style></head><body><main>
-<header><div><div class="brand">Sentinel Pi / task report</div><h1>${text(r.taskId)}</h1><div class="sub">${text(r.sourceId)}</div></div><span class="badge ${text(r.result.status)}">${text(r.result.status.replaceAll('_', ' '))}</span></header>
+<header><div><div class="brand">Pi Sentinel / task report</div><h1>${text(r.taskId)}</h1><div class="sub">${text(r.sourceId)}</div></div><span class="badge ${text(r.result.status)}">${text(r.result.status.replaceAll('_', ' '))}</span></header>
 ${r.preview ? '<div class="preview"><strong>Preview.</strong> No publication or repair was executed.</div>' : ''}
 <section class="summary"><p>${text(r.result.summary)}</p><div class="metrics"><div class="metric"><strong>${text(r.coverage)}</strong><small>Evidence coverage</small></div><div class="metric"><strong>${r.usage.calls}</strong><small>Model calls</small></div><div class="metric"><strong>${(r.durationMs / 1000).toFixed(1)}s</strong><small>Duration</small></div><div class="metric"><strong>${r.usage.known ? (r.usage.input + r.usage.output).toLocaleString('en') : 'Unknown'}</strong><small>Reported tokens</small></div></div></section>
 ${r.missing.length ? `<section class="card missing"><h2>Context requiring attention</h2><ul>${r.missing.map((m) => '<li>' + text(m) + '</li>').join('')}</ul></section>` : ''}

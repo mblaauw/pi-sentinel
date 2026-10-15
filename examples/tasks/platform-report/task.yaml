@@ -1,4 +1,4 @@
-apiVersion: sentinel.pi/v1alpha1
+apiVersion: pi-sentinel/v1alpha1
 id: platform-report
 owner: platform-team
 recipe: platform-report@1

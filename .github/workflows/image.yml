@@ -16,7 +16,7 @@ jobs:
           ACTOR: ${{ github.actor }}
           REVISION: ${{ github.sha }}
         run: |
-          IMAGE="ghcr.io/$(printf '%s' "$OWNER" | tr '[:upper:]' '[:lower:]')/sentinel-pi:sha-$REVISION"
+          IMAGE="ghcr.io/$(printf '%s' "$OWNER" | tr '[:upper:]' '[:lower:]')/pi-sentinel:sha-$REVISION"
           printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$ACTOR" --password-stdin
           docker build --pull --tag "$IMAGE" .
           docker push "$IMAGE"

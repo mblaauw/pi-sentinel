@@ -32,9 +32,9 @@ Stop the worker first and acquire the same state lock before maintenance. Use th
 source ID displayed in its report; do not blindly reset the database.
 
 ```bash
-SENTINEL_MAINTENANCE=true flock --nonblock /state/sentinel.sqlite.lock \
+PI_SENTINEL_MAINTENANCE=true flock --nonblock /state/pi-sentinel.sqlite.lock \
   node dist/cli.js task reprocess 'example/platform#123' \
-  --state /state/sentinel.sqlite
+  --state /state/pi-sentinel.sqlite
 ```
 
 Restart the normal worker afterward. Reprocessing respects action receipts,

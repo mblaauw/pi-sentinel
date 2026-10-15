@@ -92,7 +92,7 @@ export async function cycle(
   const jiti = createJiti(import.meta.url, {
     moduleCache: false,
     alias: {
-      'sentinel-pi': fileURLToPath(hostFile),
+      'pi-sentinel': fileURLToPath(hostFile),
       yaml: fileURLToPath(import.meta.resolve('yaml')),
       zod: fileURLToPath(import.meta.resolve('zod')),
     },
@@ -414,7 +414,7 @@ export async function worker(
       const u = state.usage();
       res.setHeader('content-type', 'text/plain');
       res.end(
-        `sentinel_worker_working ${working ? 1 : 0}\nsentinel_worker_ready ${healthy ? 1 : 0}\nsentinel_daily_model_calls ${u.calls}\nsentinel_daily_reserved_tokens ${u.tokens}\nsentinel_last_discovery_timestamp_seconds ${Date.parse(state.get('lastDiscovery') ?? '') / 1000 || 0}\n`,
+        `pi_sentinel_worker_working ${working ? 1 : 0}\npi_sentinel_worker_ready ${healthy ? 1 : 0}\npi_sentinel_daily_model_calls ${u.calls}\npi_sentinel_daily_reserved_tokens ${u.tokens}\npi_sentinel_last_discovery_timestamp_seconds ${Date.parse(state.get('lastDiscovery') ?? '') / 1000 || 0}\n`,
       );
       return;
     }

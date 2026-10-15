@@ -12,7 +12,7 @@ if git remote get-url origin >/dev/null 2>&1; then
   echo 'An origin already exists. Inspect it before publishing.' >&2
   exit 1
 fi
-gh repo create "$owner/sentinel-pi" --public \
+gh repo create "$owner/pi-sentinel" --public \
   --description 'Bounded autonomous Pi task workers for Kubernetes and internal model routers' \
   --source . --remote origin --push
-gh repo view "$owner/sentinel-pi" --json nameWithOwner,url,visibility
+gh repo view "$owner/pi-sentinel" --json nameWithOwner,url,visibility

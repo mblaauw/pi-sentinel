@@ -62,9 +62,9 @@ consumer deployment template. Its Docker-in-Docker image job needs a suitable
 runner. Internal installations can replace image/chart publishing jobs with
 their existing catalog components while keeping immutable image/digest handoff.
 
-`.sentinel-deploy` is intentionally hidden: a consumer supplies its deployment
+`.pi-sentinel-deploy` is intentionally hidden: a consumer supplies its deployment
 tool image, kube context/namespace, values file and task. The deploy tool image
-must include Sentinel, Helm and kubectl. The ordinary runtime image contains only
+must include Pi Sentinel, Helm and kubectl. The ordinary runtime image contains only
 the worker/CLI and Linux lock tooling.
 
 GitHub validation does not deploy anything. The manual image workflow publishes

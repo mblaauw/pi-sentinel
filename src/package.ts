@@ -26,7 +26,7 @@ export async function packageTask(r: Resolved, out: string) {
     kind: 'ConfigMap',
     metadata: {
       name,
-      labels: { 'app.kubernetes.io/part-of': 'sentinel-pi', 'sentinel.pi/task': r.task.id },
+      labels: { 'app.kubernetes.io/part-of': 'pi-sentinel', 'pi-sentinel/task': r.task.id },
     },
     immutable: true,
     data,

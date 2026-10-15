@@ -1,6 +1,6 @@
 // Copy into a task, set flow.type=custom and flow.file=flow.ts.
 // Tools can be narrowed for a stage; the host prevents widening the allowlist.
-import type { CustomFlow } from 'sentinel-pi';
+import type { CustomFlow } from 'pi-sentinel';
 const flow: CustomFlow = async (ctx) =>
   ctx.agent.run({
     instructions:

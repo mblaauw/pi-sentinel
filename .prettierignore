@@ -3,7 +3,8 @@ dist
 .git
 docs/archive
 artifacts
-.sentinel
+.pi-sentinel
 helm/*/templates
 package-lock.json
 schemas
+.vscode/code-counter

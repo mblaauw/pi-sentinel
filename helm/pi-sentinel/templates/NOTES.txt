@@ -1,4 +1,4 @@
-Sentinel Pi task {{ .Values.task.id }} is configured in {{ .Release.Namespace }}.
+Pi Sentinel task {{ .Values.task.id }} is configured in {{ .Release.Namespace }}.
 Mode: {{ .Values.task.mode }}
 Task package: {{ .Values.task.configMapName }}
 

@@ -1,6 +1,6 @@
 // Copy into a task, add extensions: [tool.ts], and include its name in agent.tools.
 // No network, credential or dependency installation is needed for this example.
-import type { CustomTool } from 'sentinel-pi';
+import type { CustomTool } from 'pi-sentinel';
 const tool: CustomTool = {
   name: 'check_reference_format',
   manifest: {

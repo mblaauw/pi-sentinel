@@ -9,12 +9,12 @@ export async function configuration(
   baseUrl = 'http://127.0.0.1:9/api/v4',
   patch: Record<string, unknown> = {},
 ) {
-  const root = await mkdtemp(join(tmpdir(), 'sentinel-test-')),
+  const root = await mkdtemp(join(tmpdir(), 'pi-sentinel-test-')),
     dir = join(root, 'tasks/review');
   await mkdir(dir, { recursive: true });
   await mkdir(join(root, 'environments'));
   const task = {
-    apiVersion: 'sentinel.pi/v1alpha1',
+    apiVersion: 'pi-sentinel/v1alpha1',
     id: 'review',
     owner: 'team',
     recipe: 'gitlab-refinement@1',
@@ -30,7 +30,7 @@ export async function configuration(
         baseUrl,
         allowedProjects: ['example/platform'],
         botUserId: 99,
-        readTokenEnv: 'SENTINEL_TEST_READ',
+        readTokenEnv: 'PI_SENTINEL_TEST_READ',
       },
     },
     models: { default: { baseUrl: baseUrl.replace('/api/v4', '/v1'), modelId: 'local-model' } },

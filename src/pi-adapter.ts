@@ -69,7 +69,7 @@ export async function runAgent(
   signal: AbortSignal,
   budget: CallBudget,
 ): Promise<{ result: AgentResult; usage: Usage }> {
-  const temp = await mkdtemp(join(tmpdir(), 'sentinel-session-'));
+  const temp = await mkdtemp(join(tmpdir(), 'pi-sentinel-session-'));
   const modelConfig = r.platform.models[r.task.agent.modelProfile]!;
   const runtime = await ModelRuntime.create({
     credentials: new InMemoryCredentialStore(),
@@ -78,7 +78,7 @@ export async function runAgent(
     refreshOnCreate: false,
     modelsStorePath: join(temp, 'models-store.json'),
   });
-  runtime.registerProvider('sentinel-internal', {
+  runtime.registerProvider('pi-sentinel-internal', {
     baseUrl: modelConfig.baseUrl,
     api: 'openai-completions',
     apiKey: modelConfig.apiKeyEnv ? process.env[modelConfig.apiKeyEnv] : 'internal',
@@ -96,7 +96,7 @@ export async function runAgent(
   });
   if (modelConfig.apiKeyEnv && !process.env[modelConfig.apiKeyEnv])
     throw new Error(`Missing model credential '${modelConfig.apiKeyEnv}'`);
-  const model = runtime.getModel('sentinel-internal', modelConfig.modelId);
+  const model = runtime.getModel('pi-sentinel-internal', modelConfig.modelId);
   if (!model) throw new Error('Configured model not registered');
   const usage: Usage = { calls: 0, input: 0, output: 0, cacheRead: 0, known: true };
   let calls = 0,

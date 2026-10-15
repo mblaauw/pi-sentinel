@@ -6,24 +6,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "sentinel.name" . }}
+  name: {{ include "pi-sentinel.name" . }}
   labels:
-    {{- include "sentinel.labels" . | nindent 4 }}
+    {{- include "pi-sentinel.labels" . | nindent 4 }}
 spec:
   replicas: {{ ternary 1 0 .Values.task.enabled }}
   strategy: {type: Recreate}
   selector:
     matchLabels:
-      {{- include "sentinel.selector" . | nindent 6 }}
+      {{- include "pi-sentinel.selector" . | nindent 6 }}
   template:
-    {{- include "sentinel.pod" . | nindent 4 }}
+    {{- include "pi-sentinel.pod" . | nindent 4 }}
 {{- else if eq .Values.task.mode "cron" }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "sentinel.name" . }}
+  name: {{ include "pi-sentinel.name" . }}
   labels:
-    {{- include "sentinel.labels" . | nindent 4 }}
+    {{- include "pi-sentinel.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.task.schedule | quote }}
   timeZone: {{ .Values.task.timeZone | quote }}
@@ -38,19 +38,19 @@ spec:
       backoffLimit: {{ .Values.job.backoffLimit }}
       ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
       template:
-        {{- include "sentinel.pod" . | nindent 8 }}
+        {{- include "pi-sentinel.pod" . | nindent 8 }}
 {{- else }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "sentinel.name" . }}
+  name: {{ include "pi-sentinel.name" . }}
   labels:
-    {{- include "sentinel.labels" . | nindent 4 }}
+    {{- include "pi-sentinel.labels" . | nindent 4 }}
 spec:
   suspend: {{ not .Values.task.enabled }}
   activeDeadlineSeconds: {{ .Values.job.activeDeadlineSeconds }}
   backoffLimit: {{ .Values.job.backoffLimit }}
   ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
   template:
-    {{- include "sentinel.pod" . | nindent 4 }}
+    {{- include "pi-sentinel.pod" . | nindent 4 }}
 {{- end }}

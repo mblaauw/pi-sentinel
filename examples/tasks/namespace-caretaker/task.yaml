@@ -1,4 +1,4 @@
-apiVersion: sentinel.pi/v1alpha1
+apiVersion: pi-sentinel/v1alpha1
 id: namespace-caretaker
 owner: platform-team
 recipe: kubernetes-care@1

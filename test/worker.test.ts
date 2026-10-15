@@ -38,7 +38,7 @@ test('worker skips unchanged items, isolates preview and emits an actual HTML re
     assert.equal(reports[0]!.preview, true);
     assert.ok(
       (await readFile(join(root, 'reports', reports[0]!.runId, 'report.html'), 'utf8')).includes(
-        'Sentinel Pi',
+        'Pi Sentinel',
       ),
     );
     const prior = calls;
@@ -60,7 +60,7 @@ test('a custom TypeScript flow works against the same bounded host API', async (
   r.tools = [];
   await writeFile(
     join(r.dir, 'flow.ts'),
-    'import {defineFlow} from "sentinel-pi"; export default defineFlow(async ctx => ctx.agent.run({instructions:"Be specific", tools:[]}));',
+    'import {defineFlow} from "pi-sentinel"; export default defineFlow(async ctx => ctx.agent.run({instructions:"Be specific", tools:[]}));',
   );
   r.task.flow = { type: 'custom', file: 'flow.ts' };
   const adapter: Adapter = {
@@ -91,7 +91,7 @@ test('repair patches only an opted-in replicated deployment and verifies rollout
       uid: 'owner-1',
       resourceVersion: '1',
       generation: 1,
-      annotations: { 'sentinel.pi/auto-repair': 'true' },
+      annotations: { 'pi-sentinel/auto-repair': 'true' },
     },
     spec: {
       replicas: 2,

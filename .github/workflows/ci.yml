@@ -19,5 +19,5 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - run: docker run --rm -v "$PWD:/src" -w /src alpine/helm:3.19.0 lint helm/sentinel-pi --set task.configMapName=validation-bundle
-      - run: docker run --rm -v "$PWD:/src" -w /src alpine/helm:3.19.0 template validation helm/sentinel-pi --set task.configMapName=validation-bundle --set task.mode=continuous
+      - run: docker run --rm -v "$PWD:/src" -w /src alpine/helm:3.19.0 lint helm/pi-sentinel --set task.configMapName=validation-bundle
+      - run: docker run --rm -v "$PWD:/src" -w /src alpine/helm:3.19.0 template validation helm/pi-sentinel --set task.configMapName=validation-bundle --set task.mode=continuous

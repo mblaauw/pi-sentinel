@@ -1,4 +1,4 @@
-# Sentinel Pi architecture
+# Pi Sentinel architecture
 
 This implements the small-worker architecture developed in design revision v0.2.
 `README.md` and the code describe the current executable contract. Site-specific

@@ -14,7 +14,7 @@ test('actual pinned Pi SDK uses the router, structured tool and bounded tool set
   let requests = 0;
   const server = await mockServer((req, res, body) => {
     assert.equal(req.url, '/v1/chat/completions');
-    assert.ok(!JSON.stringify(body.messages[0]).includes('sentinel-session-'));
+    assert.ok(!JSON.stringify(body.messages[0]).includes('pi-sentinel-session-'));
     requests++;
     assert.ok(body.max_tokens <= 4000 || body.max_completion_tokens <= 4000);
     assert.deepEqual(

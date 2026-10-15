@@ -1,6 +1,6 @@
 node_modules/
 dist/
-.sentinel/
+.pi-sentinel/
 coverage/
 *.sqlite*
 *.tgz
@@ -11,3 +11,4 @@ coverage/
 *.key
 artifacts/
 docs/archive/
+.vscode/code-counter/

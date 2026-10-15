@@ -18,6 +18,6 @@ helm-lint:
     name: $HELM_IMAGE
     entrypoint: ['']
   script:
-    - helm lint helm/sentinel-pi --set task.configMapName=validation-bundle
-    - helm template validation helm/sentinel-pi --set task.configMapName=validation-bundle
-    - helm template validation helm/sentinel-pi --set task.configMapName=validation-bundle --set task.mode=continuous
+    - helm lint helm/pi-sentinel --set task.configMapName=validation-bundle
+    - helm template validation helm/pi-sentinel --set task.configMapName=validation-bundle
+    - helm template validation helm/pi-sentinel --set task.configMapName=validation-bundle --set task.mode=continuous
