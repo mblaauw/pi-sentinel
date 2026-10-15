@@ -10,6 +10,9 @@ jobs:
     container: node:24.19.0-bookworm
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      # Checkout owns the repository as root inside the job container; mark it
+      # safe so later steps can read git state.
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm run check
       - run: npm run schemas && git diff --exit-code -- schemas/
